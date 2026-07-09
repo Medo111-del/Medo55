@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أنتي يا بنوتي ليكي كل الحب - 28/9/2025</title>
+    <style>
+        :root {
+            --deep-red: #4a0404;
+            --bright-red: #ff0000;
+            --soft-white: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, var(--deep-red) 0%, #000000 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* شاشة الباسورد */
+        #password-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1a0000 0%, #4a0404 50%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: 0.8s ease-in-out;
+        }
+
+        /* رفع النصوص وصندوق الإدخال لضمان التفاعل بدون أي عوائق */
+        #password-screen h2 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            text-shadow: 0 0 15px var(--bright-red);
+            z-index: 3000; 
+            position: relative;
+        }
+
+        #password-screen input {
+            padding: 18px;
+            font-size: 1.3rem;
+            border-radius: 15px;
+            border: 2px solid var(--bright-red);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            text-align: center;
+            outline: none;
+            width: 280px;
+            z-index: 3000;
+            position: relative;
+        }
+
+        #password-screen button {
+            margin-top: 25px;
+            padding: 12px 40px;
+            background: var(--bright-red);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            z-index: 3000;
+            position: relative;
+        }
+
+        /* محتوى الموقع الأساسي */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: 1.5s;
+            text-align: center;
+            width: 100%;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .bg-hearts {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* الحاوية السحرية للقلوب الكثيفة فوق الشاشة الحمراء مباشرة */
+        .intro-hearts {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: 2000; /* تجعلها تطفو فوق شاشة تسجيل الدخول الحمراء حتماً */
+            pointer-events: none !important;
+        }
+
+        .card {
+            background: var(--soft-white);
+            backdrop-filter: blur(20px);
+            padding: 45px;
+            border-radius: 50px;
+            box-shadow: 0 0 60px rgba(255, 0, 0, 0.4);
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .profile-img {
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid var(--bright-red);
+            margin-bottom: 30px;
+            box-shadow: 0 0 35px rgba(255, 0, 0, 0.6);
+        }
+
+        h1 { 
+            font-size: 3rem; 
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px var(--bright-red);
+        }
+        
+        /* صندوق الكلام */
+        .love-letter {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(255, 0, 0, 0.05);
+            border-radius: 25px;
+            border-right: 8px solid var(--bright-red);
+            font-weight: bold;
+            min-height: 120px;
+            text-align: justify;
+        }
+
+        /* تأثير مؤشر الكتابة الوامض */
+        .cursor {
+            display: inline-block;
+            background-color: var(--bright-red);
+            vertical-align: middle;
+            width: 3px;
+            height: 24px;
+            margin-right: 5px;
+            animation: blink 0.7s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { background-color: transparent }
+            50% { background-color: var(--bright-red); }
+        }
+
+        /* حاوية العداد */
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .timer-box {
+            background: var(--bright-red);
+            padding: 20px 40px;
+            border-radius: 25px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            min-width: 200px;
+        }
+
+        /* أنيميشن الطيران المضمون والمعدل بالكامل */
+        .floating-heart {
+            position: absolute;
+            pointer-events: none !important;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.9));
+            animation: moveUp linear infinite;
+        }
+
+        @keyframes moveUp {
+            0% { 
+                transform: translateY(105vh) translateX(0) scale(0.5); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 1; 
+            }
+            50% {
+                transform: translateY(50vh) translateX(25px) scale(1.2) rotate(180deg);
+            }
+            100% { 
+                transform: translateY(-15vh) translateX(-25px) scale(1.6) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+
+        #startBtn {
+            background: #fff;
+            color: var(--bright-red);
+            padding: 20px 50px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro-hearts" id="introHearts"></div>
+
+    <div id="password-screen">
+        <h2>اكتبي كلمة السر يا جوجو ❤️</h2>
+        <input type="password" id="passInput" placeholder="أنا بحبك">
+        <button onclick="checkPassword()">دخول</button>
+    </div>
+
+    <div class="bg-hearts" id="bgHearts"></div>
+
+    <audio id="bgMusic">
+        <source src="music.m4a" type="audio/mp4">
+    </audio>
+
+    <div id="main-content">
+        <div class="card">
+            <img src="image.jpg" class="profile-img" onerror="this.src='https://via.placeholder.com/210'">
+            <h1>ليكي كل الحب يا بنوتي ❤️</h1>
+            
+            <div class="love-letter" id="typewriter-text"><span class="cursor"></span></div>
+            
+            <div class="timer-container">
+                <div class="timer-box">بقالنا سوا مع بعض:<br><span id="together"></span></div>
+            </div>
+            <button id="startBtn" onclick="startSurprise()">اغنيه بحبها معاكي يا جوجو ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        const fullText = "يا أجمل من رأت عيني كل سنة وأنتِ طيبة يا روحي وجودك جنبي هو أكبر نعمة ربنا رزقني بيها وبوعدك إننا نفضل سوا للأبد ونكبر مع بعض ونحقق كل أحلامنا بحبك يا دكتورتي يا حب عمري";
+        let introInterval;
+
+        function createIntroHearts() {
+            const container = document.getElementById('introHearts');
+            const icons = ['❤️', '💖', '💕', '💗', '💓'];
+            
+            // معدل سريع وكثيف لملء الشاشة فورا (كل 50 مللي ثانية)
+            introInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                
+                // توزيع أفقي كامل ومضمون الرؤية
+                heart.style.left = (Math.random() * 95) + 'vw';
+                
+                // تصحيح فوري: جعل البداية الافتراضية من أعلى الشاشة (0) مع ترك الأنيميشن يتكفل بالصعود من تحت لفوق
+                heart.style.top = '0px';
+                
+                const size = Math.random() * 30 + 20; 
+                heart.style.fontSize = size + 'px';
+                
+                const duration = Math.random() * 3 + 4;
+                heart.style.animationDuration = duration + 's';
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), duration * 1000);
+            }, 50); 
+        }
+
+        // تشغيل توليد القلوب فورا بمجرد فتح المتصفح
+        window.onload = createIntroHearts;
+
+        function typeWriter() {
+            let i = 0;
+            const element = document.getElementById("typewriter-text");
+            element.innerHTML = '<span class="cursor"></span>';
+            
+            function type() {
+                if (i < fullText.length) {
+                    element.innerHTML = fullText.substring(0, i + 1) + '<span class="cursor"></span>';
+                    i++;
+                    setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('passInput').value;
+            if (pass.toLowerCase() === "i love you") {
+                clearInterval(introInterval);
+                document.getElementById('introHearts').innerHTML = '';
+
+                document.getElementById('password-screen').style.opacity = '0';
+
+                setTimeout(() => {
+                    document.getElementById('password-screen').style.display = 'none';
+                    document.getElementById('introHearts').style.display = 'none';
+                    const main = document.getElementById('main-content');
+                    main.style.display = 'flex';
+                    setTimeout(() => main.style.opacity = '1', 50);
+                    updateTimers();
+                    typeWriter();
+                }, 800);
+            } else {
+                alert("الباسورد غلط يا روحي.. جربي تاني!");
+            }
+        }
+
+        const anniversary = new Date("2025-09-28");
+
+        function updateTimers() {
+            const now = new Date();
+            const diffT = Math.floor((now - anniversary) / (1000*60*60*24));
+            document.getElementById("together").innerText = diffT + " يوم";
+        }
+
+        function createHearts() {
+            const container = document.getElementById('bgHearts');
+            const icons = ['❤️', '💖', '💕', '💗'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '0px';
+                
+                const size = Math.random() * 20 + 20; 
+                heart.style.fontSize = size + 'px';
+                
+                const duration = Math.random() * 4 + 4;
+                heart.style.animationDuration = duration + 's';
+                container.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), duration * 1000);
+            }, 200); 
+        }
+
+        function startSurprise() {
+            document.getElementById('bgMusic').play();
+            createHearts();
+            document.getElementById('startBtn').innerText = "بحبك يا كل حياتي ❤️";
+        }
+    </script>
+</body>
+</html>
